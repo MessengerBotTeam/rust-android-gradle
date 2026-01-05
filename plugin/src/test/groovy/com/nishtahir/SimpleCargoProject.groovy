@@ -51,7 +51,7 @@ class SimpleCargoProject {
         def module = cargoModuleFile.path.replace("\\", "/")
         def targetDirectory = targetDirectoryFile.path.replace("\\", "/")
 
-        def targetStrings = targets.collect({"\"${it}\"" }).join(", ")
+        def targetStrings = targets.collect({ "\"${it}\"" }).join(", ")
 
         file('app/build.gradle') << """
                 cargo {

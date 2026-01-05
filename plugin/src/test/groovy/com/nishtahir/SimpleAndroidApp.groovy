@@ -1,20 +1,20 @@
 package com.nishtahir
 
-import org.gradle.api.GradleException
-import org.gradle.util.VersionNumber
+
+import org.gradle.util.GradleVersion
 
 import static com.nishtahir.Versions.android
 
 class SimpleAndroidApp {
     final File projectDir
     private final File cacheDir
-    final VersionNumber androidVersion
-    final VersionNumber ndkVersion
-    final VersionNumber kotlinVersion
+    final GradleVersion androidVersion
+    final GradleVersion ndkVersion
+    final GradleVersion kotlinVersion
     private final boolean kotlinEnabled
     private final boolean kaptWorkersEnabled
 
-    private SimpleAndroidApp(File projectDir, File cacheDir, VersionNumber androidVersion, VersionNumber ndkVersion, VersionNumber kotlinVersion, boolean kotlinEnabled, boolean kaptWorkersEnabled) {
+    private SimpleAndroidApp(File projectDir, File cacheDir, GradleVersion androidVersion, GradleVersion ndkVersion, GradleVersion kotlinVersion, boolean kotlinEnabled, boolean kaptWorkersEnabled) {
         this.projectDir = projectDir
         this.cacheDir = cacheDir
         this.androidVersion = androidVersion
@@ -101,7 +101,7 @@ class SimpleAndroidApp {
         file("${app}/build.gradle") << subprojectConfiguration("com.android.application") << """
                 android.defaultConfig.applicationId "org.gradle.android.test.app"
             """.stripIndent() << activityDependency() <<
-            """
+                """
                 dependencies {
                     implementation project(':${library}')
                 }
@@ -274,10 +274,10 @@ class SimpleAndroidApp {
         boolean kotlinEnabled = true
         boolean kaptWorkersEnabled = true
 
-        VersionNumber androidVersion = Versions.latestAndroidVersion()
-        VersionNumber ndkVersion = Versions.latestAndroidVersion() >= android("3.4.0") ? VersionNumber.parse("26.3.11579264") : null
+        GradleVersion androidVersion = Versions.latestAndroidVersion()
+        GradleVersion ndkVersion = Versions.latestAndroidVersion() >= android("3.4.0") ? GradleVersion.version("26.3.11579264") : null
 
-        VersionNumber kotlinVersion = VersionNumber.parse("1.3.72")
+        GradleVersion kotlinVersion = GradleVersion.version("1.3.72")
         File projectDir
         File cacheDir
 
@@ -291,7 +291,7 @@ class SimpleAndroidApp {
             return this
         }
 
-        Builder withKotlinVersion(VersionNumber kotlinVersion) {
+        Builder withKotlinVersion(GradleVersion kotlinVersion) {
             this.kotlinVersion = kotlinVersion
             return this
         }
@@ -301,7 +301,7 @@ class SimpleAndroidApp {
             return this
         }
 
-        Builder withAndroidVersion(VersionNumber androidVersion) {
+        Builder withAndroidVersion(GradleVersion androidVersion) {
             this.androidVersion = androidVersion
             if (this.androidVersion < android("3.4.0")) {
                 this.ndkVersion = null
@@ -313,13 +313,13 @@ class SimpleAndroidApp {
             return withAndroidVersion(android(androidVersion))
         }
 
-        Builder withNdkVersion(VersionNumber ndkVersion) {
+        Builder withNdkVersion(GradleVersion ndkVersion) {
             this.ndkVersion = ndkVersion
             return this
         }
 
         Builder withNdkVersion(String ndkVersion) {
-            return withNdkVersion(VersionNumber.parse(ndkVersion))
+            return withNdkVersion(GradleVersion.version(ndkVersion))
         }
 
         Builder withProjectDir(File projectDir) {

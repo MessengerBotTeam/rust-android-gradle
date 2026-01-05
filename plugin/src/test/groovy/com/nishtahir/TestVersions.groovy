@@ -3,23 +3,23 @@ package com.nishtahir
 import com.google.common.collect.ImmutableMultimap
 import com.google.common.collect.Multimap
 import org.gradle.util.GradleVersion
-import org.gradle.util.VersionNumber
 
 
 class TestVersions {
-    static Multimap<VersionNumber, GradleVersion> getAllCandidateTestVersions() {
+
+    static Multimap<GradleVersion, GradleVersion> getAllCandidateTestVersions() {
         def testedVersion = System.getProperty('org.gradle.android.testVersion')
         if (testedVersion) {
-            return ImmutableMultimap.copyOf(Versions.SUPPORTED_VERSIONS_MATRIX.entries().findAll {it.key == VersionNumber.parse(testedVersion) })
+            return ImmutableMultimap.copyOf(Versions.SUPPORTED_VERSIONS_MATRIX.entries().findAll { it.key == GradleVersion.version(testedVersion) })
         } else {
             return Versions.SUPPORTED_VERSIONS_MATRIX
         }
     }
 
-    static VersionNumber latestAndroidVersionForCurrentJDK() {
-        String currentJDKVersion = System.getProperty("java.version");
+    static GradleVersion latestAndroidVersionForCurrentJDK() {
+        String currentJDKVersion = System.getProperty("java.version")
         if (currentJDKVersion.startsWith("1.")) {
-            return allCandidateTestVersions.keySet().findAll {it < VersionNumber.parse("7.0.0-alpha01")}.max()
+            return allCandidateTestVersions.keySet().findAll { it < GradleVersion.version("7.0.0-alpha01") }.max()
         }
         return allCandidateTestVersions.keySet().max()
     }
@@ -29,20 +29,43 @@ class TestVersions {
     }
 
     static GradleVersion latestSupportedGradleVersionFor(String androidVersion) {
-        return latestSupportedGradleVersionFor(VersionNumber.parse(androidVersion))
+        return latestSupportedGradleVersionFor(GradleVersion.version(androidVersion))
     }
 
-    static GradleVersion latestSupportedGradleVersionFor(VersionNumber androidVersion) {
-        return allCandidateTestVersions.asMap().find {it.key.major == androidVersion.major && it.key.minor == androidVersion.minor }?.value?.max()
+    static GradleVersion latestSupportedGradleVersionFor(GradleVersion androidVersion) {
+        return allCandidateTestVersions.asMap().find {
+            getMajor(it.key) == getMajor(androidVersion) && getMinor(it.key) == getMinor(androidVersion)
+        }?.value?.max()
     }
 
-    static VersionNumber getLatestVersionForAndroid(String version) {
-        VersionNumber versionNumber = VersionNumber.parse(version)
-        return allCandidateTestVersions.keySet().findAll { it.major == versionNumber.major && it.minor == versionNumber.minor }?.max()
+    static GradleVersion getLatestVersionForAndroid(String version) {
+        GradleVersion versionNumber = GradleVersion.version(version)
+        return allCandidateTestVersions.keySet().findAll {
+            getMajor(it) == getMajor(versionNumber) && getMinor(it) == getMinor(versionNumber)
+        }?.max()
     }
 
-    static List<VersionNumber> getLatestAndroidVersions() {
-        def minorVersions = allCandidateTestVersions.keySet().collect { "${it.major}.${it.minor}" }
+    static List<GradleVersion> getLatestAndroidVersions() {
+        def minorVersions = allCandidateTestVersions.keySet().collect { "${getMajor(it)}.${getMinor(it)}" }
         return minorVersions.collect { getLatestVersionForAndroid(it) }
+    }
+
+    static int getMajor(GradleVersion v) {
+        return getPart(v, 0)
+    }
+
+    static int getMinor(GradleVersion v) {
+        return getPart(v, 1)
+    }
+
+    static int getPatch(GradleVersion v) {
+        return getPart(v, 2)
+    }
+
+    private static int getPart(GradleVersion v, int index) {
+        def parts = v.version.tokenize('.')
+        if (index >= parts.size()) return 0
+        def numberString = parts[index].find(/^\d+/)
+        return numberString?.isInteger() ? numberString.toInteger() : 0
     }
 }

@@ -4,8 +4,6 @@ import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import spock.lang.Unroll
 
-import com.nishtahir.Versions
-
 class CargoTargetTest extends AbstractTest {
     @Unroll
     def "cargoBuild produces #location for target #target"() {
@@ -49,7 +47,7 @@ class CargoTargetTest extends AbstractTest {
                 // ["darwin", "desktop/darwin/librust.dylib"],
                 // And so does cross-compiling from macOS to Linux targets.
                 // ["linux-x86-64", "desktop/linux-x86-64/librust.so"],
-                ["arm64",  "android/arm64-v8a/librust.so"],
+                ["arm64", "android/arm64-v8a/librust.so"],
                 ["x86_64", "android/x86_64/librust.so"],
         ]
     }

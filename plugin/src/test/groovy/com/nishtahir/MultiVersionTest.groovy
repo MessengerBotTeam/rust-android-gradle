@@ -1,10 +1,6 @@
 package com.nishtahir
 
-import java.lang.annotation.ElementType
-import java.lang.annotation.Inherited
-import java.lang.annotation.Retention
-import java.lang.annotation.RetentionPolicy
-import java.lang.annotation.Target
+import java.lang.annotation.*
 
 /**
  * Represents tests that span multiple versions of Android Gradle Plugin and need to be executed
@@ -13,4 +9,4 @@ import java.lang.annotation.Target
 @Inherited
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
-@interface MultiVersionTest { }
+@interface MultiVersionTest {}

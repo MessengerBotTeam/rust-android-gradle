@@ -6,7 +6,8 @@ import org.junit.rules.TemporaryFolder
 import spock.lang.Specification
 
 class AbstractTest extends Specification {
-    @Rule TemporaryFolder temporaryFolder
+    @Rule
+    TemporaryFolder temporaryFolder
     File cacheDir
 
     def setup() {
@@ -15,9 +16,9 @@ class AbstractTest extends Specification {
 
     def withGradleVersion(String gradleVersion) {
         GradleRunner.create()
-            .withGradleVersion(gradleVersion)
-            .forwardOutput()
-            .withDebug(false)
+                .withGradleVersion(gradleVersion)
+                .forwardOutput()
+                .withDebug(false)
     }
 
     File file(String path) {

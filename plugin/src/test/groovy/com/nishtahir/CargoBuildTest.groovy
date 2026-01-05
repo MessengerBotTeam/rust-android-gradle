@@ -1,12 +1,9 @@
 package com.nishtahir
 
-import org.gradle.api.GradleException
+
 import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.TaskOutcome
 import spock.lang.Unroll
-
-import com.nishtahir.Versions
-
 
 @MultiVersionTest
 class CargoBuildTest extends AbstractTest {
@@ -16,20 +13,20 @@ class CargoBuildTest extends AbstractTest {
         SimpleAndroidApp.builder(temporaryFolder.root, cacheDir)
                 .withAndroidVersion(androidVersion)
                 .withKotlinDisabled()
-                // TODO: .withCargo(...)
+        // TODO: .withCargo(...)
                 .build()
                 .writeProject()
 
         SimpleCargoProject.builder(temporaryFolder.root)
-            .withTargets(["x86_64"])
-            .build()
-            .writeProject()
+                .withTargets(["x86_64"])
+                .build()
+                .writeProject()
 
         when:
         BuildResult buildResult = withGradleVersion(gradleVersion.version)
                 .withProjectDir(temporaryFolder.root)
                 .withArguments('cargoBuild', '--info', '--stacktrace')
-                // .withDebug(true)
+        // .withDebug(true)
                 .build()
 
         // To ease debugging.
