@@ -17,7 +17,7 @@ gradlePlugin {
 
     plugins {
         rustAndroidGradlePlugin {
-            id = 'org.mozilla.rust-android-gradle.rust-android'
+            id = 'org.msgbot.rust-android-gradle.rust-android'
             implementationClass = 'com.nishtahir.RustAndroidPlugin'
             displayName = 'Plugin for building Rust with Cargo in Android projects'
             description = 'A plugin that helps build Rust JNI libraries with Cargo for use in Android projects.'

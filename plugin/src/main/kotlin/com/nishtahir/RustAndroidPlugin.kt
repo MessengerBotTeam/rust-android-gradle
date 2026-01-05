@@ -213,6 +213,7 @@ open class RustAndroidPlugin : Plugin<Project> {
         }
     }
 
+    @Suppress("UnstableApiUsage")
     private inline fun <reified T : BaseExtension> configurePlugin(project: Project) =
         with(project) {
             cargoExtension.localProperties = Properties()
@@ -320,7 +321,10 @@ open class RustAndroidPlugin : Plugin<Project> {
                 eachFile {
                     it.path = it.path.replaceFirst("com/nishtahir", "")
                 }
-                fileMode = 493 // 0755 in decimal; Kotlin doesn't have octal literals (!).
+                // fileMode = 493 // 0755 in decimal; Kotlin doesn't have octal literals (!).
+                filePermissions { perm ->
+                    perm.unix(493)
+                }
                 includeEmptyDirs = false
                 duplicatesStrategy = DuplicatesStrategy.EXCLUDE
             }
