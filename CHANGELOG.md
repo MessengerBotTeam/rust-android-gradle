@@ -1,3 +1,13 @@
+# 0.10.0-msgbot
+
+#### Dependency Version Update
+- Kotlin: 2.3.0
+- AGP: 8.13.2 
+#### Remove Samples
+
+This repository has removed the sample code.\
+To find a sample code, go to [mozilla/rust-android-gradle](https://github.com/mozilla/rust-android-gradle/tree/master/samples).
+
 # 0.9.6
 
 - Added option to add a build-id during linking

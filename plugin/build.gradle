@@ -26,7 +26,7 @@ gradlePlugin {
     }
 }
 
-group 'org.mozilla.rust-android-gradle'
+group 'org.msgbot.rust-android-gradle'
 version "$plugin_version"
 
 def isCI = (System.getenv('CI') ?: 'false').toBoolean()
